@@ -1,0 +1,101 @@
+Assignment: Handling Missing Data in ETL
+
+Objective
+
+	This assignment explains why missing data occurs in ETL pipelines, how different handling techniques impact analytics, 
+	and how to choose the right method instead of blindly deleting data.
+
+SECTION A – THEORETICAL QUESTIONS
+
+Q1. What are the most common reasons for missing data in ETL pipelines?
+
+>	Human error during data entry.
+
+>	System integration issues.
+
+>	Incomplete records from source systems.
+
+>	Sensor or API failures.
+
+>	Data corruption or migration errors.
+
+Q2. Why is blindly deleting rows with missing values considered a bad practice in ETL? 
+
+>	Because it reduces dataset size, may remove valuable information, and can introduce bias into analysis.
+
+Q3. Explain the difference between Listwise deletion and Column deletion. Mention one scenario where each is appropriate.
+
+>	Listwise deletion: Removes entire rows with missing values. Appropriate when only a few rows are incomplete.
+
+>	Column deletion: Removes entire columns with too many missing values. Appropriate when a column is mostly empty and not useful.
+
+Q4. Why is median imputation preferred over mean imputation for skewed data such as income?
+
+>	Median is less affected by extreme values (outliers), making it more reliable for skewed distributions like income.
+
+
+Q5. What is forward fill and in what type of dataset is it most useful?  
+
+>	Forward fill replaces missing values with the last known value. It is most useful in time-series datasets where values change gradually over time.
+
+Q6. Why should flagging missing values be done before imputation in an ETL workflow?  
+
+>	Flagging helps track which values were originally missing, allowing analysts to study patterns of missingness and avoid misleading conclusions.
+
+Q7. Consider a scenario where income is missing for many customers. How can this missingness itself provide business insights?  
+
+>	It may indicate reluctance to disclose income, highlight specific customer segments, or reveal gaps in data collection processes.
+
+
+
+
+SECTION B – PRACTICAL QUESTIONS
+
+
+Dataset Provided:  
+
+	Customer_ID, Name, City, Monthly_Sales, Income, Region (with some missing values).
+
+Q8. Listwise Deletion – Remove all rows where Region is missing.
+
+>	Affected row: Customer_ID 105 (Region = NaN).
+
+>	Dataset after deletion: All rows except 105 remain.
+
+>	Records lost: 1.
+
+
+Q9. Imputation – Handle missing values in Monthly_Sales using Forward Fill.
+
+>	Before: Customer_ID 102, 104, 106 had Monthly_Sales = NaN.
+
+After Forward Fill:
+
+	102 → 12000 (from 101)
+
+	104 → 15000 (from 103)
+
+	106 → 18000 (from 105)
+
+	Forward fill is suitable because Monthly_Sales is sequential and can reasonably carry forward previous values.
+
+
+Q10. Flagging Missing Data – Create a flag column for missing Income.
+
+>	New column: Income_Missing_Flag (0 = present, 1 = missing).
+
+>	Customers with missing income: 102, 104, 107.
+
+>	Count of missing income = 3.
+
+
+
+
+
+
+
+
+
+
+
+
